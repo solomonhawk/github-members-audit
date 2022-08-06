@@ -15,16 +15,60 @@ a {
   box-sizing: border-box;
 }
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+a {
+  @apply text-blue-500 font-semibold hover:underline;
+}
+
+.table {
+  @apply w-full border border-gray-200 text-sm;
+}
+
+.table thead th {
+  @apply border border-gray-200 text-left px-4 py-2;
+}
+
+.table tbody td {
+  @apply border border-gray-200 px-4 py-2;
+}
+
+.viget-logo {
+  @apply relative pl-[36px];
+}
+
+.viget-logo::before {
+  content: '';
+  @apply absolute h-[20px] w-[20px] left-0 top-[7px] bg-[rgba(19,149,186)] rounded-full;
+}
+
+.viget-logo::after {
+  content: '';
+  @apply absolute h-[11px] w-[11px] left-[18px] top-[1px] bg-[rgba(241,108,32)] rounded-full;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
+
   body {
     color: white;
     background: black;
   }
-}
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+  a {
+    @apply text-blue-300;
+  }
+
+  .table {
+    @apply border-gray-700;
+  }
+
+  .table thead th,
+  .table tbody td {
+    @apply border-gray-700;
+  }
+}
