@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Octokit } from "octokit";
 import type { GraphQlQueryResponseData } from "@octokit/graphql";
+import basicAuthMiddleware from "nextjs-basic-auth-middleware";
 
 const org = process.env.NEXT_PUBLIC_ORG;
 const githubToken = process.env.GITHUB_TOKEN;
@@ -11,6 +12,10 @@ if (!org) {
 
 if (!githubToken) {
   throw new Error("GITHUB_TOKEN environment variable is not set");
+}
+
+if (!process.env.BASIC_AUTH_CREDENTIALS) {
+  throw new Error("BASIC_AUTH_CREDENTIALS environment variable is not set");
 }
 
 const queryRepositoriesCollaborators = `
@@ -40,9 +45,11 @@ const queryRepositoriesCollaborators = `
 `;
 
 export default async function handler(
-  _req: NextApiRequest,
+  req: NextApiRequest,
   res: NextApiResponse<unknown>
 ) {
+  await basicAuthMiddleware(req, res);
+
   const client = new Octokit({
     auth: process.env.GITHUB_TOKEN,
   });
@@ -70,9 +77,6 @@ export default async function handler(
       });
     }
   }
-
-  // cache this response for 10 minutes
-  res.setHeader("Cache-Control", "s-maxage=600");
 
   res.status(200).json({
     preparedOn: new Date().toISOString(),

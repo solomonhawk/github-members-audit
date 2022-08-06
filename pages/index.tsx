@@ -50,8 +50,6 @@ const Home: NextPage = () => {
     fetchData();
   }, []);
 
-  console.log(data);
-
   return (
     <div>
       <Head>
