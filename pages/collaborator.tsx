@@ -14,7 +14,9 @@ import type { CollaboratorsData } from "pages";
 import { DiGithubBadge } from "react-icons/di";
 import cx from "clsx";
 import { useRef, useState } from "react";
-import { GoChevronDown, GoChevronUp } from "react-icons/go";
+import { GoChevronDown, GoChevronLeft, GoChevronUp } from "react-icons/go";
+import { useMediaQuery } from "utils/use-media-query";
+import Link from "next/link";
 
 function notNull<T>(s: T): s is NonNullable<T> {
   return s !== null;
@@ -51,8 +53,7 @@ const Collaborator: NextPage = () => {
     {
       enabled: !!username && !!orgId,
       retry: false,
-      // staleTime: 1000 * 60 * 10, // 10 minutes
-      staleTime: 1000 * 60 * 60, // 60 minutes
+      staleTime: 1000 * 60 * 10, // 10 minutes
       refetchOnWindowFocus: false,
       keepPreviousData: true,
     }
@@ -79,8 +80,7 @@ const Collaborator: NextPage = () => {
     },
     {
       retry: false,
-      // staleTime: 1000 * 60 * 10, // 10 minutes
-      staleTime: 1000 * 60 * 60, // 60 minutes
+      staleTime: 1000 * 60 * 10, // 10 minutes
       refetchOnWindowFocus: false,
       keepPreviousData: true,
     }
@@ -107,6 +107,7 @@ const Collaborator: NextPage = () => {
         <title>{`${org} Collaborator ${username}`}</title>
         <meta name="description" content="Outside collaborator details" />
         <link rel="icon" href="/favicon.ico" />
+        <meta name="color-scheme" content="dark light" />
       </Head>
 
       <Header
@@ -115,9 +116,17 @@ const Collaborator: NextPage = () => {
             <Code>{username}</Code> Collaborator Details
           </>
         }
+        startAdornment={
+          <Link href="/">
+            <a className="hidden sm:flex hover:no-underline rounded-full aspect-square w-6 text-xs border border-gray-300 dark:border-gray-700 items-center justify-center mr-2 shrink-0 hover:border-blue-500 dark:hover:border-blue-300">
+              <span className="sr-only">Back to home</span>
+              <GoChevronLeft />
+            </a>
+          </Link>
+        }
       />
 
-      <main className="container mx-auto px-8">
+      <main className="container mx-auto px-4 md:px-8">
         {userDataError && <ErrorView error={userDataError.message} />}
         {collaboratorsError && <ErrorView error={collaboratorsError.message} />}
 
@@ -152,7 +161,8 @@ type Repos = Record<
     comments: {
       id: string;
       url: any;
-      body: string;
+      bodyText: string;
+      bodyHTML: string;
       createdAt: any;
       repository: {
         id: string;
@@ -181,6 +191,12 @@ function Details({
   collaboratorsData: CollaboratorsData;
   animateIn: boolean;
 }) {
+  const { colSpan, rowSpan } = useMediaQuery(
+    ["(min-width: 768px)"],
+    [{ rowSpan: 999, colSpan: undefined }],
+    { rowSpan: undefined, colSpan: 999 }
+  );
+
   // XXX: that's a lot of data fiddling... extract to a fn at least
   const repos = collaboratorsData.collaboratorsRepos[username].reduce<Repos>(
     (acc, repoName) => {
@@ -233,111 +249,130 @@ function Details({
   const issueCommentCount = issueComments.length;
 
   return (
-    <table className={cx("table", { "animate-rise": animateIn })}>
-      <tbody>
-        <tr>
-          <th rowSpan={999} className="w-1 align-top">
-            <div className="p-4 space-y-6 text-left">
-              <div className="block shrink-0 leading-[0]">
-                <Avatar
-                  src={user.avatarUrl}
-                  className="w-32 h-32 lg:w-40 lg:h-40 border-4 border-gray-300 dark:border-gray-700"
-                />
-              </div>
-
-              <div>
-                <h2 className="text-white text-xl">
-                  <a href={user.url} rel="external noreferrer" target="_blank">
-                    {username}
-                  </a>
-                </h2>
-
-                {user.company && (
-                  <p className="font-normal mb-4">{user.company}</p>
-                )}
-              </div>
-              <a
-                className="my-4 md:my-0 whitespace-nowrap flex gap-1 items-center text-xs !mt-3"
-                href={`https://github.com/orgs/${org}/people/${username}`}
-                rel="external noreferrer"
-                target="_blank"
-              >
-                <DiGithubBadge className="w-4 h-4 shrink-0" />
-                View Org Membership ⧉
-              </a>
-
-              {user.bio && <p className="font-normal">{user.bio}</p>}
-
-              {(user.organizations?.nodes?.length ?? 0) > 0 ? (
-                <div className="space-y-2">
-                  <h3 className="font-semibold text-sm">
-                    Other Organizations:
-                  </h3>
-
-                  <ul>
-                    {user.organizations.nodes!.map((org) => (
-                      <li key={org?.login}>
-                        <a
-                          className="block w-full"
-                          href={`https://github.com/${org?.login}`}
-                          rel="external noreferrer"
-                          target="_blank"
-                        >
-                          {org?.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <small className="block font-normal leading-tight opacity-80">
-                    Note: This list is likely not exhaustive.
-                  </small>
+    <div className={cx("table-wrapper", { "animate-rise": animateIn })}>
+      <table className="table">
+        <tbody>
+          <tr>
+            <th
+              rowSpan={rowSpan}
+              colSpan={colSpan}
+              className="!p-0 w-1 align-top"
+            >
+              <div className="p-4 md:p-6 text-left flex flex-row md:flex-col gap-4 md:gap-6">
+                <div className="block shrink-0 leading-[0] order-1 ml-auto md:order-none md:ml-0">
+                  <Avatar
+                    src={user.avatarUrl}
+                    className="w-20 h-20 sm:w-32 sm:h-32 lg:w-40 lg:h-40 border-4 border-gray-300 dark:border-gray-700"
+                  />
                 </div>
-              ) : null}
 
-              <div className="space-y-1">
-                <h3 className="font-semibold mb-2">Recent Activity:</h3>
+                <div className="space-y-6">
+                  <div>
+                    <h2 className="text-white text-xl leading-none">
+                      <a
+                        href={user.url}
+                        rel="external noreferrer"
+                        target="_blank"
+                      >
+                        {username}
+                      </a>
+                    </h2>
 
-                <p className="font-normal text-xs opacity-80">
-                  {issueCommentCount} issue comments
-                </p>
+                    {user.company && (
+                      <p className="font-normal mb-4">{user.company}</p>
+                    )}
+                  </div>
+                  <a
+                    className="my-4 md:my-0 whitespace-nowrap flex gap-1 items-center text-xs !mt-3"
+                    href={`https://github.com/orgs/${org}/people/${username}`}
+                    rel="external noreferrer"
+                    target="_blank"
+                  >
+                    <DiGithubBadge className="w-4 h-4 shrink-0 text-gray-800 dark:text-gray-200" />
+                    View Org Membership ⧉
+                  </a>
 
-                <p className="font-normal text-xs opacity-80">
-                  {totalCommits} commits
-                </p>
+                  {user.bio && <p className="font-normal">{user.bio}</p>}
+
+                  {(user.organizations?.nodes?.length ?? 0) > 0 ? (
+                    <div className="space-y-2">
+                      <h3 className="font-semibold text-sm">
+                        Other Organizations:
+                      </h3>
+
+                      <ul>
+                        {user.organizations.nodes!.map((org) => (
+                          <li key={org?.login}>
+                            <a
+                              className="block w-full"
+                              href={`https://github.com/${org?.login}`}
+                              rel="external noreferrer"
+                              target="_blank"
+                            >
+                              {org?.name}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <small className="block font-normal leading-tight opacity-80">
+                        Note: This list is likely not exhaustive.
+                      </small>
+                    </div>
+                  ) : null}
+
+                  <div className="space-y-1">
+                    <h3 className="font-semibold mb-2">Recent Activity:</h3>
+
+                    <p className="font-normal text-xs opacity-80">
+                      {issueCommentCount} issue comment
+                      {issueCommentCount === 1 ? "" : "s"}
+                    </p>
+
+                    <p className="font-normal text-xs opacity-80">
+                      {totalCommits} commit
+                      {totalCommits === 1 ? "" : "s"}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </th>
-          <th className="h-1 p-2">Repository</th>
-          <th className="h-1 p-2">Activity</th>
-        </tr>
-
-        {sortReposByCommits(repos).map((repo) => (
-          <tr key={repo.name}>
-            <td className="w-1/4">
-              <a href={repo.url} target="_blank" rel="external noreferrer">
-                {org}/{repo.name}{" "}
-              </a>
-              <a
-                href={`https://github.com/${org}/${repo.name}/commits?author=${username}`}
-                target="_blank"
-                rel="external noreferrer"
-              >
-                <small className="text-black dark:text-white opacity-50">
-                  ({countCommits(repo.commits) + repo.comments.length}
-                  &nbsp;contributions)
-                </small>
-              </a>
-            </td>
-
-            <td className="!p-0">
-              <CommitsTable commits={repo.commits} />
-              <CommentsTable comments={repo.comments} />
-            </td>
+            </th>
+            <th className="h-1 p-2 hidden md:table-cell">Repository</th>
+            <th className="h-1 p-2 hidden md:table-cell">Activity</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+
+          <tr className="md:hidden">
+            <th className="h-1 p-2">Repository</th>
+            <th className="h-1 p-2">Activity</th>
+          </tr>
+
+          {sortReposByCommits(repos).map((repo) => (
+            <tr key={repo.name}>
+              <td className="w-1/4">
+                <a href={repo.url} target="_blank" rel="external noreferrer">
+                  {org}/{repo.name}{" "}
+                </a>
+                <a
+                  href={`https://github.com/${org}/${repo.name}/commits?author=${username}`}
+                  target="_blank"
+                  rel="external noreferrer"
+                >
+                  <small className="text-black dark:text-white opacity-50">
+                    ({countCommits(repo.commits) + repo.comments.length}
+                    &nbsp;contributions)
+                  </small>
+                </a>
+              </td>
+
+              <td className="!p-0">
+                <CommitsTable commits={repo.commits} />
+                <CommentsTable comments={repo.comments} />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
@@ -375,7 +410,8 @@ function CommitsTable({ commits }: { commits: RecordValue<Repos>["commits"] }) {
             </td>
             <td>
               <a href={commit.url} target="_blank" rel="external noreferrer">
-                {commit.commitCount} commits
+                {commit.commitCount} commit
+                {commit.commitCount === 1 ? "" : "s"}
               </a>
             </td>
           </tr>
@@ -414,7 +450,7 @@ function CommentsTable({
 }: {
   comments: RecordValue<Repos>["comments"];
 }) {
-  const commentsToShow = 5;
+  const commentsToShow = 3;
   const [showAll, setShowAll] = useState(false);
 
   const visibleComments = showAll
@@ -479,7 +515,7 @@ function CommentRow({
   comment: ArrayValue<RecordValue<Repos>["comments"]>;
 }) {
   const shortCommentSize = 84;
-  const hasOverflow = comment.body.length > shortCommentSize;
+  const hasOverflow = comment.bodyText.length > shortCommentSize;
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
@@ -497,26 +533,45 @@ function CommentRow({
       </td>
 
       <td className="w-1/2 !p-0 h-1">
-        {hasOverflow ? (
+        {hasOverflow && !isExpanded && (
           <button
             className="flex w-full transition px-4 py-2 h-full grow text-left group"
-            onClick={() => setIsExpanded((e) => !e)}
-            title={isExpanded ? "Collapse comment" : "Expand full comment"}
+            onClick={() => setIsExpanded(true)}
+            title="Expand full comment"
           >
             <span className="block text-xs opacity-70 break-words overflow-hidden group-hover:opacity-100 mr-2">
-              {isExpanded
-                ? comment.body
-                : `${comment.body.slice(0, shortCommentSize - 20)}…`}
+              {`${comment.bodyText.slice(0, shortCommentSize)}...`}
             </span>
 
             <span className="transition shrink-0 opacity-0 group-hover:opacity-100 rounded-sm p-1 bg-gray-200 hover:text-blue-800 hover:!bg-blue-300 dark:text-white dark:bg-gray-800 dark:hover:!bg-blue-500 dark:hover:text-white self-center">
-              {isExpanded ? <GoChevronUp /> : <GoChevronDown />}
+              <GoChevronDown />
             </span>
           </button>
-        ) : (
-          <p className="px-4 py-2 text-xs opacity-70 break-words group-hover:opacity-100">
-            {comment.body}
-          </p>
+        )}
+
+        {hasOverflow && isExpanded && (
+          <div className="flex w-full transition px-4 py-2 h-full grow text-left group">
+            <p
+              className="text-xs opacity-70 break-words group-hover:opacity-100 mr-2 prose dark:prose-invert"
+              dangerouslySetInnerHTML={{ __html: comment.bodyHTML }}
+            />
+
+            <button
+              // className="block text-xs opacity-70 break-words overflow-hidden group-hover:opacity-100 shrink-0"
+              className="transition shrink-0 opacity-0 group-hover:opacity-100 rounded-sm p-1 bg-gray-200 hover:text-blue-800 hover:!bg-blue-300 dark:text-white dark:bg-gray-800 dark:hover:!bg-blue-500 dark:hover:text-white self-center"
+              onClick={() => setIsExpanded(false)}
+              title="Collapse comment"
+            >
+              <GoChevronUp />
+            </button>
+          </div>
+        )}
+
+        {!hasOverflow && (
+          <p
+            className="px-4 py-2 text-xs opacity-70 break-words group-hover:opacity-100 prose dark:prose-invert"
+            dangerouslySetInnerHTML={{ __html: comment.bodyHTML }}
+          />
         )}
       </td>
     </tr>

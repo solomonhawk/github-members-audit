@@ -28,7 +28,7 @@ query GetUserProfileWithContributions($orgId: ID!, $login: String!) {
           title
           url
         }
-        body
+        bodyText
         bodyHTML
         createdAt
       }

@@ -1,3 +1,7 @@
+html {
+  height: 100%;
+}
+
 html,
 body {
   padding: 0;
@@ -19,8 +23,16 @@ a {
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply min-h-full overflow-x-hidden;
+}
+
 a {
   @apply transition text-blue-500 font-semibold hover:underline hover:text-blue-700;
+}
+
+.table-wrapper {
+  @apply overflow-x-scroll -mx-4 px-4 md:-mx-8 md:px-8;
 }
 
 .table {
@@ -59,6 +71,16 @@ a {
 .viget-logo::after {
   content: '';
   @apply absolute h-[11px] w-[11px] left-[18px] top-[1px] bg-[rgba(241,108,32)] rounded-full;
+}
+
+.vignette-radial {
+  @apply relative;
+}
+
+.vignette-radial:after {
+  content: '';
+  @apply absolute inset-0;
+  background: radial-gradient(circle, transparent 50%, white 150%);
 }
 
 .animate-rise {
@@ -104,8 +126,7 @@ a {
   }
 
   body {
-    color: white;
-    background: black;
+    @apply text-white bg-[#0d0d0d];
   }
 
   a {
@@ -120,5 +141,9 @@ a {
   .table tbody th,
   .table tbody td {
     @apply border-gray-700;
+  }
+
+  .vignette-radial:after {
+    background: radial-gradient(circle, transparent 50%, #0d0d0d 150%);
   }
 }

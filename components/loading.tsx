@@ -3,8 +3,21 @@ import { GoSync } from "react-icons/go";
 
 export function LoadingView({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex justify-center my-10">
-      <p className="flex flex-col sm:flex-row text-center sm:text-left items-center gap-2 font-semibold rounded border border-gray-200 dark:border-gray-700 px-4 py-3 sm:leading-none">
+    <div className="flex flex-col items-center justify-center my-10">
+      <div className="w-[100px] animate-rise relative vignette-radial">
+        <div className="w-full h-0 pb-[178%] relative">
+          <iframe
+            src="https://giphy.com/embed/0HEbTGRLDSP7fu3vMQ"
+            width="100%"
+            height="100%"
+            frameBorder="0"
+            className="absolute giphy-embed"
+            allowFullScreen
+          ></iframe>
+        </div>
+      </div>
+
+      <p className="flex flex-col sm:flex-row text-center sm:text-left items-center gap-2 font-semibold rounded border border-gray-200 bg-white dark:border-gray-700 dark:bg-[#0d0d0d] px-4 py-3 sm:leading-none relative z-10">
         <GoSync className="animate-spin inline-block" /> {children}
       </p>
     </div>

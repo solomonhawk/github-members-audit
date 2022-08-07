@@ -48,8 +48,7 @@ const Home: NextPage = () => {
     },
     {
       retry: false,
-      // staleTime: 1000 * 60 * 10, // 10 minutes
-      staleTime: 1000 * 60 * 60, // 60 minutes
+      staleTime: 1000 * 60 * 10, // 10 minutes
       refetchOnWindowFocus: false,
       keepPreviousData: true,
     }
@@ -66,6 +65,7 @@ const Home: NextPage = () => {
           content="Keep track of members and collaborators"
         />
         <link rel="icon" href="/favicon.ico" />
+        <meta name="color-scheme" content="dark light" />
       </Head>
 
       <Header
@@ -76,7 +76,7 @@ const Home: NextPage = () => {
         }
       />
 
-      <main className="container mx-auto px-8">
+      <main className="container mx-auto px-4 md:px-8">
         {error && <ErrorView error={error.message} />}
 
         {isLoading && (
@@ -148,13 +148,15 @@ function Table({
         </div>
       </div>
 
-      <table className={cx("table", { "animate-rise": animateIn })}>
-        {groupBy === "contributor" ? (
-          <CollaboratorsTable data={data} />
-        ) : (
-          <ReposTable data={data} />
-        )}
-      </table>
+      <div className={cx("table-wrapper", { "animate-rise": animateIn })}>
+        <table className="table">
+          {groupBy === "contributor" ? (
+            <CollaboratorsTable data={data} />
+          ) : (
+            <ReposTable data={data} />
+          )}
+        </table>
+      </div>
     </>
   );
 }
@@ -164,7 +166,7 @@ function CollaboratorsTable({ data }: { data: CollaboratorsData }) {
     <>
       <thead>
         <tr>
-          <th>Username</th>
+          <th>User</th>
           <th>Repos</th>
         </tr>
       </thead>
@@ -193,10 +195,13 @@ function CollaboratorsTable({ data }: { data: CollaboratorsData }) {
                   </Link>
 
                   <a
-                    className="p-2 shrink-0 flex items-center"
+                    className="p-2 shrink-0 flex items-center text-gray-700/50 dark:text-gray-300/50"
                     href={data.collaborators[userLogin].url}
                     rel="external noreferrer"
                     target="_blank"
+                    title={`View ${
+                      data.collaborators[userLogin].name || userLogin
+                    }'s github profile`}
                   >
                     <DiGithubBadge className="w-4 h-4" />
                   </a>
@@ -281,10 +286,13 @@ function ReposTable({ data }: { data: CollaboratorsData }) {
                   </Link>
 
                   <a
-                    className="p-2 shrink-0 flex items-center"
+                    className="p-2 shrink-0 flex items-center text-gray-700/50 dark:text-gray-300/50"
                     href={collaborator.url}
                     rel="external noreferrer"
                     target="_blank"
+                    title={`View ${
+                      collaborator.name || collaborator.login
+                    }'s github profile`}
                   >
                     <DiGithubBadge className="w-4 h-4" />
                   </a>

@@ -1281,6 +1281,15 @@
   dependencies:
     "tslib" "^2.4.0"
 
+"@tailwindcss/typography@^0.5.4":
+  "integrity" "sha512-QEdg40EmGvE7kKoDei8zr5sf4D1pIayHj4R31bH3lX8x2BtTiR+jNejYPOkhbmy3DXgkMF9jC8xqNiGFAuL9Sg=="
+  "resolved" "https://registry.npmjs.org/@tailwindcss/typography/-/typography-0.5.4.tgz"
+  "version" "0.5.4"
+  dependencies:
+    "lodash.castarray" "^4.4.0"
+    "lodash.isplainobject" "^4.0.6"
+    "lodash.merge" "^4.6.2"
+
 "@tanstack/query-core@^4.0.0-beta.1":
   "integrity" "sha512-9LsABpZXkWZHi4P1ozRETEDXQocLAxVzQaIhganxbNuz/uA3PsCAJxJTiQrknG5htLMzOF5MqM9G10e6DCxV1A=="
   "resolved" "https://registry.npmjs.org/@tanstack/query-core/-/query-core-4.0.10.tgz"
@@ -3581,6 +3590,11 @@
   dependencies:
     "p-locate" "^5.0.0"
 
+"lodash.castarray@^4.4.0":
+  "integrity" "sha512-aVx8ztPv7/2ULbArGJ2Y42bG1mEQ5mGjpdvrbJcJFU3TbYybe+QlLS4pst9zV52ymy2in1KpFPiZnAOATxD4+Q=="
+  "resolved" "https://registry.npmjs.org/lodash.castarray/-/lodash.castarray-4.4.0.tgz"
+  "version" "4.4.0"
+
 "lodash.includes@^4.3.0":
   "integrity" "sha512-W3Bx6mdkRTGtlJISOvVD/lbqjTlPPUDTMnlXZFnVwi9NKJ6tiAk6LVdlhZMm17VZisqhKcgzpO5Wz91PCt5b0w=="
   "resolved" "https://registry.npmjs.org/lodash.includes/-/lodash.includes-4.3.0.tgz"
@@ -4711,7 +4725,7 @@
   dependencies:
     "tslib" "^2.0.3"
 
-"tailwindcss@^3.1.8":
+"tailwindcss@^3.1.8", "tailwindcss@>=3.0.0 || insiders":
   "integrity" "sha512-YSneUCZSFDYMwk+TGq8qYFdCA3yfBRdBlS7txSq0LUmzyeqRe3a8fBQzbz9M3WS/iFT4BNf/nmw9mEzrnSaC0g=="
   "resolved" "https://registry.npmjs.org/tailwindcss/-/tailwindcss-3.1.8.tgz"
   "version" "3.1.8"
