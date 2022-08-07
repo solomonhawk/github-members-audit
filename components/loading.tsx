@@ -5,9 +5,9 @@ export function LoadingView({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col items-center justify-center my-10">
       <div className="w-[100px] animate-rise relative vignette-radial">
-        <div className="w-full h-0 pb-[178%] relative">
+        <div className="w-full h-0 pb-[90%] relative">
           <iframe
-            src="https://giphy.com/embed/0HEbTGRLDSP7fu3vMQ"
+            src="https://giphy.com/embed/vrzRiGOgNNVvLkd2SG"
             width="100%"
             height="100%"
             frameBorder="0"

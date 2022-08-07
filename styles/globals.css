@@ -25,6 +25,7 @@ a {
 
 body {
   @apply min-h-full overflow-x-hidden;
+  color-scheme: auto;
 }
 
 a {
