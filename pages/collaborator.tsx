@@ -568,7 +568,7 @@ function CommentRow({
         {hasOverflow && isExpanded && (
           <div className="flex w-full transition px-4 py-2 h-full grow text-left group">
             <p
-              className="text-xs opacity-70 break-words group-hover:opacity-100 mr-2 prose dark:prose-invert"
+              className="text-xs opacity-70 break-words group-hover:opacity-100 mr-2 prose dark:prose-invert overflow-scroll"
               dangerouslySetInnerHTML={{ __html: comment.bodyHTML }}
             />
 
@@ -585,7 +585,7 @@ function CommentRow({
 
         {!hasOverflow && (
           <p
-            className="px-4 py-2 text-xs opacity-70 break-words group-hover:opacity-100 prose dark:prose-invert"
+            className="px-4 py-2 text-xs opacity-70 break-words group-hover:opacity-100 prose dark:prose-invert overflow-scroll"
             dangerouslySetInnerHTML={{ __html: comment.bodyHTML }}
           />
         )}
