@@ -3,7 +3,7 @@ import { GoHeart, GoRepoForked } from "react-icons/go";
 
 export function Footer() {
   return (
-    <footer className="container mx-auto px-8 my-10 space-y-4">
+    <footer className="container mx-auto px-8 mt-10 pb-10 space-y-4">
       <p className="container mx-auto max-w-md text-sm text-center">
         The source for this app is available on github. Feel free to fork it and
         set up a deployment on Vercel with your own GitHub access key,
