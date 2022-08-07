@@ -1,0 +1,57 @@
+query GetUserProfileWithContributions($orgId: ID!, $login: String!) {
+  user(login: $login) {
+    bio
+    url
+    name
+    company
+    avatarUrl
+    organizations(first: 100) {
+      nodes {
+        name
+        login
+      }
+    }
+    issueComments(last: 100) {
+      totalCount
+      nodes {
+        id
+        url
+        repository {
+          id
+          name
+          owner {
+            login
+          }
+        }
+        issue {
+          id
+          title
+          url
+        }
+        body
+        bodyHTML
+        createdAt
+      }
+    }
+    contributionsCollection(organizationID: $orgId) {
+      commitContributionsByRepository(maxRepositories: 100) {
+        url
+        repository {
+          id
+          name
+          owner {
+            login
+          }
+        }
+        contributions(last: 100) {
+          totalCount
+          nodes {
+            url
+            commitCount
+            occurredAt
+          }
+        }
+      }
+    }
+  }
+}

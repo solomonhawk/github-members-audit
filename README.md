@@ -1,22 +1,56 @@
+# GitHub Organization Member Audit
+
+A super basic app to summarize outside contributors and their repo access for a GitHub organization.
+
+**NOTE**: When deployed on a hobby Vercel plan, you might encounter periodic 504 timeouts on the lambda due to the 10 second timeout. A pro plan or higher shouldn't encounter these issues due to the 60 second timeout.
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
 
-First, run the development server:
+1. Install dependencies
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+    ```bash
+    $ npm install
+    # or
+    $ yarn install
+    ```
+
+3. Set up environment variables
+
+    ```bash
+    $ cp .env{.example,}
+    ```
+
+4. Run the development server:
+
+    ```bash
+    $ npm run dev
+    # or
+    $ yarn dev
+    ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Environment
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+This application requires:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+1. `GITHUB_TOKEN`: A [personal GitHub access token](https://github.com/settings/tokens) with the proper scopes (all `repo`, and `read:org`) associated with the organization you want to query against
+2. `NEXT_PUBLIC_ORG`: The name of the organization
+3. `BASIC_AUTH_CREDENTIALS`: HTTP Basic auth credentials formatted like `username:password`
+
+Be sure to set each of these within your Vercel deployment as well.
+
+## GraphQL TypeScript Integration
+
+A similar process to [this blog post](https://benlimmer.com/2020/05/16/adding-typescript-types-github-graphql-api/) is used to generate types for application-specific queries that utilize the GitHub Octokit types (which come from `@ocktokit/graphql-schema`). [`next-plugin-graphql`](https://github.com/lfades/next-plugin-graphql) enables importing `.graphql` files (by adding the `graphql-tag/loader` webpack loader).
+
+**NOTE**: After adding or editing a `.graphql` file in the project you need to run `npm run codegen` to get updated TypeScript types.
+
+Also, the Octokit client expects string queries, not the tagged ASTs that `graphql-tag/loader` produces so we have to `print` them back to strings, awkwardly, before passing them to the SDK.
+
+There's surely a better way, but this works for now.
 
 ## Learn More
 

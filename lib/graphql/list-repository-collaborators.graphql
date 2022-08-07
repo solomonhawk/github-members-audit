@@ -1,0 +1,24 @@
+query ListRepositoryCollaborators($org: String!, $cursor: String) {
+  organization(login: $org) {
+    id
+    repositories(affiliations: COLLABORATOR, first: 100, after: $cursor) {
+      pageInfo {
+        endCursor
+        startCursor
+      }
+      nodes {
+        name
+        url
+        collaborators(affiliation: OUTSIDE) {
+          nodes {
+            name
+            login
+            url
+            company
+            avatarUrl
+          }
+        }
+      }
+    }
+  }
+}

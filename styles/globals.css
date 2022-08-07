@@ -20,19 +20,30 @@ a {
 @tailwind utilities;
 
 a {
-  @apply text-blue-500 font-semibold hover:underline;
+  @apply transition text-blue-500 font-semibold hover:underline hover:text-blue-700;
 }
 
 .table {
-  @apply w-full border border-gray-200 text-sm;
+  @apply w-full border border-gray-200 text-sm border-collapse;
 }
 
-.table thead th {
+.table thead th,
+.table tbody th {
   @apply border border-gray-200 text-left px-4 py-2;
 }
 
 .table tbody td {
-  @apply border border-gray-200 px-4 py-2;
+  @apply border border-gray-200 px-4 py-2 align-top;
+}
+
+.table .table td,
+.table .table th {
+  @apply border-l-0 border-b-0;
+}
+
+.table .table td:last-child,
+.table .table th:last-child {
+  @apply border-r-0;
 }
 
 .viget-logo {
@@ -49,6 +60,43 @@ a {
   @apply absolute h-[11px] w-[11px] left-[18px] top-[1px] bg-[rgba(241,108,32)] rounded-full;
 }
 
+.animate-rise {
+  animation-name: rise;
+  animation-duration: 500ms;
+  animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.animate-fade {
+  animation-name: fade;
+  animation-duration: 500ms;
+}
+
+@keyframes rise {
+  0% {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
@@ -60,7 +108,7 @@ a {
   }
 
   a {
-    @apply text-blue-300;
+    @apply text-blue-300 hover:text-blue-200;
   }
 
   .table {
@@ -68,6 +116,7 @@ a {
   }
 
   .table thead th,
+  .table tbody th,
   .table tbody td {
     @apply border-gray-700;
   }
