@@ -11,10 +11,15 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import type { CollaboratorsData } from "pages";
-import { DiGithubBadge } from "react-icons/di";
 import cx from "clsx";
 import { useRef, useState } from "react";
-import { GoChevronDown, GoChevronLeft, GoChevronUp } from "react-icons/go";
+import {
+  GoMarkGithub,
+  GoChevronDown,
+  GoChevronLeft,
+  GoChevronUp,
+  GoRepo,
+} from "react-icons/go";
 import { useMediaQuery } from "utils/use-media-query";
 import Link from "next/link";
 
@@ -268,7 +273,7 @@ function Details({
 
                 <div className="space-y-6">
                   <div>
-                    <h2 className="text-white text-xl leading-none">
+                    <h2 className="text-white text-xl leading-none mb-1">
                       <a
                         href={user.url}
                         rel="external noreferrer"
@@ -282,18 +287,29 @@ function Details({
                       <p className="font-normal mb-4">{user.company}</p>
                     )}
                   </div>
-                  <a
-                    className="my-4 md:my-0 whitespace-nowrap flex gap-1 items-center text-xs !mt-3"
-                    href={`https://github.com/orgs/${org}/people/${username}`}
-                    rel="external noreferrer"
-                    target="_blank"
-                  >
-                    <DiGithubBadge className="w-4 h-4 shrink-0 text-gray-800 dark:text-gray-200" />
-                    View Org Membership ⧉
-                  </a>
 
                   {user.bio && <p className="font-normal">{user.bio}</p>}
 
+                  <div>
+                    <a
+                      className="whitespace-nowrap flex gap-2 items-center mb-1"
+                      href={`https://github.com/orgs/${org}/people/${username}`}
+                      rel="external noreferrer"
+                      target="_blank"
+                    >
+                      <GoMarkGithub className="shrink-0 text-gray-800 dark:text-gray-200" />
+                      <span className="text-sm">View Org Membership ⧉</span>
+                    </a>
+
+                    <div className="flex items-center gap-2 font-normal">
+                      <GoRepo className="shrink-0 text-gray-800 dark:text-gray-200" />{" "}
+                      {collaboratorsData.collaboratorsRepos[username].length}{" "}
+                      {collaboratorsData.collaboratorsRepos[username].length ===
+                      1
+                        ? "repository"
+                        : "repositories"}
+                    </div>
+                  </div>
                   {(user.organizations?.nodes?.length ?? 0) > 0 ? (
                     <div className="space-y-2">
                       <h3 className="font-semibold text-sm">
@@ -325,13 +341,13 @@ function Details({
                     <h3 className="font-semibold mb-2">Recent Activity:</h3>
 
                     <p className="font-normal text-xs opacity-80">
-                      {issueCommentCount} issue comment
-                      {issueCommentCount === 1 ? "" : "s"}
+                      {totalCommits} commit
+                      {totalCommits === 1 ? "" : "s"}
                     </p>
 
                     <p className="font-normal text-xs opacity-80">
-                      {totalCommits} commit
-                      {totalCommits === 1 ? "" : "s"}
+                      {issueCommentCount} issue comment
+                      {issueCommentCount === 1 ? "" : "s"}
                     </p>
                   </div>
                 </div>

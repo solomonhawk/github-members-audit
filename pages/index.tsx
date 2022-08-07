@@ -107,7 +107,9 @@ function Table({
           <strong>
             {Object.keys(data.collaborators).length} outside collaborators
           </strong>{" "}
-          across <strong>{Object.keys(data.repos).length} repos</strong> as of{" "}
+          <span className="opacity-70">across</span>{" "}
+          <strong>{Object.keys(data.repos).length} repos</strong>{" "}
+          <span className="opacity-70">as of</span>{" "}
           <strong>{new Date(data.preparedOn).toLocaleDateString()}</strong>
         </p>
 
