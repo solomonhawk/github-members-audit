@@ -288,7 +288,19 @@ function Details({
                     )}
                   </div>
 
-                  {user.bio && <p className="font-normal">{user.bio}</p>}
+                  {(user.bio || user.email) && (
+                    <div>
+                      {user.bio && <p className="font-normal">{user.bio}</p>}
+                      {user.email && (
+                        <a
+                          className="block font-normal"
+                          href={`mailto:${user.email}`}
+                        >
+                          {user.email}
+                        </a>
+                      )}
+                    </div>
+                  )}
 
                   <div>
                     <a

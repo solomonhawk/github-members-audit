@@ -37113,6 +37113,7 @@ export const GetUserProfileWithContributions = gql`
   user(login: $login) {
     bio
     url
+    email
     name
     company
     avatarUrl
@@ -37199,7 +37200,7 @@ export type GetUserProfileWithContributionsQueryVariables = Exact<{
 }>;
 
 
-export type GetUserProfileWithContributionsQuery = { user: { bio: string | null, url: any, name: string | null, company: string | null, avatarUrl: any, organizations: { nodes: Array<{ name: string | null, login: string } | null> | null }, issueComments: { totalCount: number, nodes: Array<{ id: string, url: any, bodyText: string, bodyHTML: any, createdAt: any, repository: { id: string, name: string, owner: { login: string } | { login: string } }, issue: { id: string, title: string, url: any } } | null> | null }, contributionsCollection: { commitContributionsByRepository: Array<{ url: any, repository: { id: string, name: string, owner: { login: string } | { login: string } }, contributions: { totalCount: number, nodes: Array<{ url: any, commitCount: number, occurredAt: any } | null> | null } }> } } | null };
+export type GetUserProfileWithContributionsQuery = { user: { bio: string | null, url: any, email: string, name: string | null, company: string | null, avatarUrl: any, organizations: { nodes: Array<{ name: string | null, login: string } | null> | null }, issueComments: { totalCount: number, nodes: Array<{ id: string, url: any, bodyText: string, bodyHTML: any, createdAt: any, repository: { id: string, name: string, owner: { login: string } | { login: string } }, issue: { id: string, title: string, url: any } } | null> | null }, contributionsCollection: { commitContributionsByRepository: Array<{ url: any, repository: { id: string, name: string, owner: { login: string } | { login: string } }, contributions: { totalCount: number, nodes: Array<{ url: any, commitCount: number, occurredAt: any } | null> | null } }> } } | null };
 
 export type ListRepositoryCollaboratorsQueryVariables = Exact<{
   org: Scalars['String'];

@@ -2,6 +2,7 @@ query GetUserProfileWithContributions($orgId: ID!, $login: String!) {
   user(login: $login) {
     bio
     url
+    email
     name
     company
     avatarUrl
