@@ -1,5 +1,5 @@
 import { DiGithubBadge } from "react-icons/di";
-import { GoRepoForked } from "react-icons/go";
+import { GoHeart, GoRepoForked } from "react-icons/go";
 
 export function Footer() {
   return (
@@ -31,6 +31,20 @@ export function Footer() {
         >
           <GoRepoForked />
           Fork on GitHub
+        </a>
+      </div>
+
+      <div className="flex justify-center">
+        <a
+          className="flex items-center text-xs leading-none font-mono text-gray-700 dark:text-gray-300"
+          href="https://viget.com"
+          target="_blank"
+          rel="external noreferrer"
+        >
+          Made with <GoHeart className="mx-1 mt-[2px]" /> at{" "}
+          <span className="viget-logo">
+            <span className="sr-only">Viget</span>
+          </span>
         </a>
       </div>
     </footer>

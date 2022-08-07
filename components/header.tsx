@@ -8,9 +8,7 @@ export function Header({ title }: { title: React.ReactNode }) {
     <header className="container mx-auto px-8 flex flex-col md:flex-row md:items-center justify-between my-4">
       <Link href="/">
         <a className="hover:no-underline">
-          <h1 className="text-xl viget-logo text-gray-900 dark:text-white">
-            {title}
-          </h1>
+          <h1 className="text-xl text-gray-900 dark:text-white">{title}</h1>
         </a>
       </Link>
 

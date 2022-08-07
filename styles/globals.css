@@ -47,7 +47,8 @@ a {
 }
 
 .viget-logo {
-  @apply relative pl-[36px];
+  @apply relative w-[36px] h-[28px];
+  transform: scale(0.5);
 }
 
 .viget-logo::before {
