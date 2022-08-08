@@ -18,7 +18,7 @@ export function LoadingView({ children }: { children: React.ReactNode }) {
       </div>
 
       <p className="flex flex-col sm:flex-row text-center sm:text-left items-center gap-2 font-semibold rounded border border-gray-200 bg-white dark:border-gray-700 dark:bg-[#0d0d0d] px-4 py-3 sm:leading-none relative z-10">
-        <GoSync className="animate-spin inline-block text-green-600 dark:text-green-400" />{" "}
+        <GoSync className="animate-spin inline-block text-green-600 dark:text-green-500" />{" "}
         {children}
       </p>
     </div>
