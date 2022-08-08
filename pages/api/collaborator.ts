@@ -21,10 +21,18 @@ export default async function handler(
   }
 
   try {
+    console.log(
+      new Date().toLocaleTimeString(),
+      "querying collaborator:",
+      username,
+      orgId
+    );
+
     res.status(200).json({
       user: await getCollaboratorDetails(client, { orgId, login: username }),
     });
   } catch (e) {
+    console.error(e);
     res.status(500).json({ message: (e as Error).message });
   }
 }

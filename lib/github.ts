@@ -13,74 +13,18 @@ export const client = new Octokit({
   auth: githubToken,
 });
 
-/**
- * Creates an async iterator that will yield all of the repos in the
- * organization with outside collaborators information included.
- *
- * @param {Octokit} client the octokit client instance
- * @returns {AsyncIterator} an async iterator of repos
- */
-export function getReposIterator(client: Octokit) {
-  return {
-    [Symbol.asyncIterator]() {
-      return {
-        cursor: null as string | null,
+export async function getReposWithCollaborators(
+  client: Octokit,
+  cursor: string | null = null
+) {
+  const result = await client.graphql<ListRepositoryCollaboratorsQuery>(
+    print(ListRepositoryCollaborators),
+    { org, cursor }
+  );
 
-        async next() {
-          console.log("Querying page with cursor:", this.cursor);
-
-          const data = await client.graphql<ListRepositoryCollaboratorsQuery>(
-            print(ListRepositoryCollaborators),
-            { org, cursor: this.cursor }
-          );
-
-          const endCursor =
-            data.organization?.repositories.pageInfo.endCursor || null;
-
-          if (
-            endCursor === this.cursor ||
-            data.organization?.repositories.nodes?.length === 0
-          ) {
-            return {
-              done: true,
-              value: { orgId: data.organization?.id, repos: [] },
-            };
-          } else {
-            this.cursor = endCursor;
-            return {
-              done: false,
-              value: {
-                orgId: data.organization?.id,
-                repos: data.organization?.repositories.nodes || [],
-              },
-            };
-          }
-        },
-      };
-    },
-  };
-}
-
-export async function getReposWithCollaborators(client: Octokit) {
-  let id: string | undefined;
-  const result = [];
-
-  for await (const { orgId, repos } of getReposIterator(client)) {
-    id = orgId;
-
-    for (const repo of repos || []) {
-      if (!repo || !repo.collaborators?.nodes) {
-        continue;
-      }
-
-      result.push(repo);
-    }
-  }
-
-  return {
-    orgId: id,
-    repos: result,
-  };
+  return result.organization as NonNullable<
+    ListRepositoryCollaboratorsQuery["organization"]
+  >;
 }
 
 export async function getCollaboratorDetails(

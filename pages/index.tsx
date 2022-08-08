@@ -1,53 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
+import cx from "clsx";
 import { Avatar } from "components/avatar";
 import { Code } from "components/code";
 import { ErrorView } from "components/error";
 import { Footer } from "components/footer";
 import { Header } from "components/header";
 import { LoadingView } from "components/loading";
+import { CollaboratorsData, fetchCollaborators } from "data/collaborators";
 import { org } from "lib/env.client";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { DiGithubBadge } from "react-icons/di";
-import cx from "clsx";
-import { useRouter } from "next/router";
 import { GoPerson, GoRepo } from "react-icons/go";
-
-export type CollaboratorsData = {
-  orgId: string;
-  preparedOn: string;
-  repos: Record<string, { name: string; url: string }>;
-  collaborators: Record<
-    string,
-    {
-      name: string;
-      login: string;
-      url: string;
-      company: string | undefined;
-      avatarUrl: string;
-    }
-  >;
-  collaboratorsRepos: Record<string, string[]>;
-};
 
 const Home: NextPage = () => {
   const { data, isLoading, error } = useQuery<CollaboratorsData, Error>(
     ["collaborators"],
-    async function fetchData() {
-      const response = await fetch("/api/collaborators");
-
-      if (!response.ok || response.status !== 200) {
-        if (response.status === 504) {
-          throw new Error("Error fetching memberships, the request timed out!");
-        } else {
-          throw new Error("Sorry, something went wrong fetching memberships.");
-        }
-      }
-
-      return response.json();
-    },
+    fetchCollaborators,
     {
       retry: false,
       staleTime: 1000 * 60 * 10, // 10 minutes
