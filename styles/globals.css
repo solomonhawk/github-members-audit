@@ -74,16 +74,6 @@ a {
   @apply absolute h-[11px] w-[11px] left-[18px] top-[1px] bg-[rgba(241,108,32)] rounded-full;
 }
 
-.vignette-radial {
-  @apply relative;
-}
-
-.vignette-radial:after {
-  content: '';
-  @apply absolute inset-0;
-  background: radial-gradient(circle, transparent 50%, white 150%);
-}
-
 .animate-rise {
   animation-name: rise;
   animation-duration: 500ms;
@@ -142,9 +132,5 @@ a {
   .table tbody th,
   .table tbody td {
     @apply border-gray-700;
-  }
-
-  .vignette-radial:after {
-    background: radial-gradient(circle, transparent 50%, #0d0d0d 150%);
   }
 }
