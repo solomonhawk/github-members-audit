@@ -148,9 +148,9 @@ function Table({
               disabled={groupBy === "user"}
               onClick={() => setGroupBy("user")}
               className={cx(
-                "transition flex items-center gap-2 rounded-sm md:rounded !rounded-r-none border border-gray-200 dark:border-gray-700 px-3 py-2 hover:no-underline hover:bg-gray-200 hover:text-gray-800 active:bg-gray-300 dark:hover:bg-gray-700 dark:hover:text-white dark:active:bg-gray-600 text-xs font-bold uppercase",
+                "transition flex items-center gap-2 rounded-sm md:rounded !rounded-r-none border border-r-none border-gray-200 dark:border-gray-700 px-3 py-2 hover:no-underline hover:bg-gray-200 hover:text-gray-800 active:bg-gray-300 dark:hover:bg-gray-700 dark:hover:text-white dark:active:bg-gray-600 text-xs font-bold uppercase",
                 {
-                  "bg-gray-800 hover:bg-gray-800 text-white hover:text-white border-gray-800 dark:bg-gray-200 dark:hover:bg-gray-200 dark:text-black dark:hover:text-black dark:!border-gray-200":
+                  "bg-green-600 hover:bg-green-600 text-white hover:text-white border-green-600 dark:bg-green-500 dark:hover:bg-green-500 dark:text-black dark:hover:text-black dark:!border-green-500 dark:active:bg-green-600":
                     groupBy === "user",
                 }
               )}
@@ -163,9 +163,9 @@ function Table({
               disabled={groupBy === "repo"}
               onClick={() => setGroupBy("repo")}
               className={cx(
-                "transition flex items-center gap-2 rounded-sm md:rounded !rounded-l-none border border-gray-200 dark:border-gray-700 px-3 py-2 hover:no-underline hover:bg-gray-200 hover:text-gray-800 active:bg-gray-300 dark:hover:bg-gray-700 dark:hover:text-white dark:active:bg-gray-600 text-xs font-bold uppercase",
+                "transition flex items-center gap-2 rounded-sm md:rounded !rounded-l-none border border-l-none border-gray-200 dark:border-gray-700 px-3 py-2 hover:no-underline hover:bg-gray-200 hover:text-gray-800 active:bg-gray-300 dark:hover:bg-gray-700 dark:hover:text-white dark:active:bg-gray-600 text-xs font-bold uppercase",
                 {
-                  "bg-gray-800 hover:bg-gray-800 text-white hover:text-white active:text-white active:bg-gray-800 border-gray-800 dark:bg-gray-200 dark:hover:bg-gray-200 dark:text-black dark:hover:text-black dark:!border-gray-200 dark:active:bg-gray-200":
+                  "bg-green-600 hover:bg-green-600 text-white hover:text-white border-green-600 dark:bg-green-500 dark:hover:bg-green-500 dark:text-black dark:hover:text-black dark:!border-green-500 dark:active:bg-green-600":
                     groupBy === "repo",
                 }
               )}
