@@ -9,9 +9,11 @@ import { org } from "lib/env.client";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DiGithubBadge } from "react-icons/di";
 import cx from "clsx";
+import { useRouter } from "next/router";
+import { GoPerson, GoRepo } from "react-icons/go";
 
 export type CollaboratorsData = {
   orgId: string;
@@ -91,6 +93,16 @@ const Home: NextPage = () => {
   );
 };
 
+type GroupBy = "repo" | "user";
+
+function isGroupBy(s: unknown): s is GroupBy {
+  if (typeof s === "string") {
+    return ["repo", "user"].includes(s);
+  }
+
+  return false;
+}
+
 function Table({
   data,
   animateIn,
@@ -98,7 +110,22 @@ function Table({
   data: CollaboratorsData;
   animateIn: boolean;
 }) {
-  const [groupBy, setGroupBy] = useState<"repo" | "contributor">("contributor");
+  const router = useRouter();
+  const initialGroupBy = isGroupBy(router.query.view)
+    ? router.query.view
+    : "user";
+
+  const [groupBy, setGroupBy] = useState<GroupBy>(initialGroupBy);
+
+  useEffect(() => {
+    if (router.query.view !== groupBy) {
+      router.replace({
+        query: {
+          view: groupBy,
+        },
+      });
+    }
+  }, [router, groupBy]);
 
   return (
     <>
@@ -114,37 +141,37 @@ function Table({
         </p>
 
         <div className="flex items-center gap-2">
-          <h2 className="text-xs font-semibold uppercase whitespace-nowrap">
-            Group By:
-          </h2>
+          <span className="sr-only">Group By:</span>
 
           <div className="flex">
             <button
-              disabled={groupBy === "contributor"}
-              onClick={() => setGroupBy("contributor")}
+              disabled={groupBy === "user"}
+              onClick={() => setGroupBy("user")}
               className={cx(
-                "transition block rounded-sm md:rounded !rounded-r-none border border-gray-200 dark:border-gray-700 px-3 py-2 hover:no-underline hover:bg-gray-200 hover:text-gray-800 active:bg-gray-300 dark:hover:bg-gray-700 dark:hover:text-white dark:active:bg-gray-600 text-xs font-bold uppercase",
+                "transition flex items-center gap-2 rounded-sm md:rounded !rounded-r-none border border-gray-200 dark:border-gray-700 px-3 py-2 hover:no-underline hover:bg-gray-200 hover:text-gray-800 active:bg-gray-300 dark:hover:bg-gray-700 dark:hover:text-white dark:active:bg-gray-600 text-xs font-bold uppercase",
                 {
                   "bg-gray-800 hover:bg-gray-800 text-white hover:text-white border-gray-800 dark:bg-gray-200 dark:hover:bg-gray-200 dark:text-black dark:hover:text-black dark:!border-gray-200":
-                    groupBy === "contributor",
+                    groupBy === "user",
                 }
               )}
             >
-              Contributor
+              <GoPerson />
+              User
             </button>
 
             <button
               disabled={groupBy === "repo"}
               onClick={() => setGroupBy("repo")}
               className={cx(
-                "transition block rounded-sm md:rounded !rounded-l-none border border-gray-200 dark:border-gray-700 px-3 py-2 hover:no-underline hover:bg-gray-200 hover:text-gray-800 active:bg-gray-300 dark:hover:bg-gray-700 dark:hover:text-white dark:active:bg-gray-600 text-xs font-bold uppercase",
+                "transition flex items-center gap-2 rounded-sm md:rounded !rounded-l-none border border-gray-200 dark:border-gray-700 px-3 py-2 hover:no-underline hover:bg-gray-200 hover:text-gray-800 active:bg-gray-300 dark:hover:bg-gray-700 dark:hover:text-white dark:active:bg-gray-600 text-xs font-bold uppercase",
                 {
                   "bg-gray-800 hover:bg-gray-800 text-white hover:text-white active:text-white active:bg-gray-800 border-gray-800 dark:bg-gray-200 dark:hover:bg-gray-200 dark:text-black dark:hover:text-black dark:!border-gray-200 dark:active:bg-gray-200":
                     groupBy === "repo",
                 }
               )}
             >
-              Repository
+              <GoRepo />
+              Repo
             </button>
           </div>
         </div>
@@ -152,7 +179,7 @@ function Table({
 
       <div className={cx("table-wrapper", { "animate-rise": animateIn })}>
         <table className="table">
-          {groupBy === "contributor" ? (
+          {groupBy === "user" ? (
             <CollaboratorsTable data={data} />
           ) : (
             <ReposTable data={data} />
